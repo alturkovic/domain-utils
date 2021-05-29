@@ -45,6 +45,10 @@ Assuming you are using the suggested rule list from Mozilla:
 - `DomainRegistry.getSubDomain`:  `null`
 - `DomainRegistry.stripSubDomain`: `null`
 
+### What about www?
+
+The domain name must exclude `www.`. This library will treat it as a subdomain otherwise.
+
 ## Importing into your project using Maven
 
 Add the JitPack repository into your `pom.xml`.
