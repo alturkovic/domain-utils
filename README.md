@@ -1,3 +1,5 @@
+![Release](https://jitpack.io/v/alturkovic/domain-utils.svg)
+
 Inspired by: https://github.com/whois-server-list/public-suffix-list
 
 How would you extract the registered domain name from these domains? How would you determine what is the subdomain?
