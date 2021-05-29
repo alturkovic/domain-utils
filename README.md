@@ -12,8 +12,6 @@ The recommended rule list to use is [Mozilla's Public Suffix List](https://publi
 
 A "public suffix" is one under which Internet users can directly register names. Some examples of public suffixes are `com`, `co.uk` and `pvt.k12.ma.us`.
 
----
-
 ## Using the library
 
 Create a `DomainRegistry` using the `DomainRegistryFactory`. There are several ways how to do this explained in one of the following chapters.
@@ -45,8 +43,6 @@ Assuming you are using the suggested rule list from Mozilla:
 - `DomainRegistry.getSubDomain`:  `null`
 - `DomainRegistry.stripSubDomain`: `null`
 
----
-
 ## Importing into your project using Maven
 
 Add the JitPack repository into your `pom.xml`.
@@ -72,13 +68,9 @@ Add the following under your `<dependencies>`:
 </dependencies>
 ```
 
-----
-
 ## IDN
 
 You can use the API's methods with UTF-8 domain names or [Punycode](https://en.wikipedia.org/wiki/Punycode) encoded ASCII domain names. The API will return the results in the same format as the input was. I.e. if you use a UTF-8 string the result will be a UTF-8 String as well. Same for Punycode.
-
----
 
 ## Keep Public Suffix List up to date
 
@@ -121,8 +113,6 @@ DomainRegistry registry = new DomainRegistryFactory()
     .from(new URL("https://publicsuffix.org/list/effective_tld_names.dat").openStream())
     .build();
 ```
-
----
 
 ## Build your own rules
 
