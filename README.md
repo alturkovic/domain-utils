@@ -16,6 +16,8 @@ A "public suffix" is one under which Internet users can directly register names.
 
 Create a `DomainRegistry` using the `DomainRegistryFactory`. There are several ways how to do this explained in one of the following chapters.
 
+API methods:
+
 - `DomainRegistry.getPublicSuffix`: extract the public suffix or `null`
 - `DomainRegistry.getRegistrableName`: extract the registrable domain name (one level under the public suffix) or `null`
 - `DomainRegistry.getSubDomain`:  extract the subdomain or `null`
