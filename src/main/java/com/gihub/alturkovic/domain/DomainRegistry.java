@@ -147,9 +147,9 @@ public class DomainRegistry {
             return null;
         }
 
-        int registeredNameIndex = domainLabels.size() - suffixLabels.size() - 1;
+        int registrableNameIndex = domainLabels.size() - suffixLabels.size() - 1;
 
-        return domainLabels.get(registeredNameIndex);
+        return domainLabels.get(registrableNameIndex);
     }
 
     private String extractSubDomain(String domain, String publicSuffix) {
@@ -160,11 +160,11 @@ public class DomainRegistry {
             return null;
         }
 
-        int registeredNameIndex = domainLabels.size() - suffixLabels.size() - 1;
-        if (registeredNameIndex == 0) {
+        int registrableNameIndex = domainLabels.size() - suffixLabels.size() - 1;
+        if (registrableNameIndex == 0) {
             return null;
         }
 
-        return DomainUtils.joinLabels(domainLabels.subList(0, registeredNameIndex));
+        return DomainUtils.joinLabels(domainLabels.subList(0, registrableNameIndex));
     }
 }

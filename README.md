@@ -17,7 +17,7 @@ A "public suffix" is one under which Internet users can directly register names.
 Create a `DomainRegistry` using the `DomainRegistryFactory`. There are several ways how to do this explained in one of the following chapters.
 
 - `DomainRegistry.getPublicSuffix`: extract the public suffix or `null`
-- `DomainRegistry.getRegisteredName`: extract the registered domain name (one level under the public suffix) or `null`
+- `DomainRegistry.getRegistrableName`: extract the registrable domain name (one level under the public suffix) or `null`
 - `DomainRegistry.getSubDomain`:  extract the subdomain or `null`
 - `DomainRegistry.stripSubDomain`: remove the subdomain if the domain is under a public suffix or `null`
 
@@ -27,19 +27,19 @@ Assuming you are using the suggested rule list from Mozilla:
 
 1. alturkovic.blogspot.com
 - `DomainRegistry.getPublicSuffix`: blogspot.com
-- `DomainRegistry.getRegisteredName`: alturkovic
+- `DomainRegistry.getRegistrableName`: alturkovic
 - `DomainRegistry.getSubDomain`:  `null`
 - `DomainRegistry.stripSubDomain`: alturkovic.blogspot.com
 
 2. en.wikipedia.org
 - `DomainRegistry.getPublicSuffix`: org
-- `DomainRegistry.getRegisteredName`: wikipedia
+- `DomainRegistry.getRegistrableName`: wikipedia
 - `DomainRegistry.getSubDomain`:  en
 - `DomainRegistry.stripSubDomain`: wikipedia.org
 
 3. alturkovic.invalid
 - `DomainRegistry.getPublicSuffix`: `null`
-- `DomainRegistry.getRegisteredName`: `null`
+- `DomainRegistry.getRegistrableName`: `null`
 - `DomainRegistry.getSubDomain`:  `null`
 - `DomainRegistry.stripSubDomain`: `null`
 
