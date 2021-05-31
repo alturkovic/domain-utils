@@ -22,44 +22,22 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain.rule;
+package com.github.alturkovic.domain.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.Comparator;
-
-/**
- * Orders prevailing rules higher.
- * <p>
- * The rule with the highest {@link Rule#size()} is the prevailing rule.
- * <p>
- * An exception rule is always the prevailing rule.
- *
- * @see Rule#isExceptionRule()
- * @see Rule#size()
- */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class RuleComparator implements Comparator<Rule> {
-    public static final RuleComparator INSTANCE = new RuleComparator();
+public final class StringUtils {
 
-    @Override
-    public int compare(Rule rule1, Rule rule2) {
-        if (rule1.isExceptionRule() && rule2.isExceptionRule()) {
-            if (!rule1.equals(rule2)) {
-                throw new IllegalArgumentException("You can't compare two exception rules.");
-            }
-            return 0;
+    public static boolean isBlank(String text) {
+        return text == null || text.isBlank();
+    }
+
+    public static String toLowerCase(String text) {
+        if (text == null) {
+            return null;
         }
-
-        if (rule1.isExceptionRule()) {
-            return 1;
-        }
-
-        if (rule2.isExceptionRule()) {
-            return -1;
-        }
-
-        return Integer.compare(rule1.size(), rule2.size());
+        return text.toLowerCase();
     }
 }

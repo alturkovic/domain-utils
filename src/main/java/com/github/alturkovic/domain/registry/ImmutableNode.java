@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain.registry;
+package com.github.alturkovic.domain.registry;
 
-import com.gihub.alturkovic.domain.rule.Rule;
+import com.github.alturkovic.domain.rule.Rule;
 import lombok.Getter;
 
 import java.util.*;

@@ -24,7 +24,6 @@
 
 package com.github.alturkovic.domain.util;
 
-import com.gihub.alturkovic.domain.util.PunycodeCodec;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

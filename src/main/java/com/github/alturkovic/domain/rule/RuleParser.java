@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain.rule;
+package com.github.alturkovic.domain.rule;
 
-import com.gihub.alturkovic.domain.util.StringUtils;
+import com.github.alturkovic.domain.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

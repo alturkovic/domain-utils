@@ -22,22 +22,47 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain.util;
+package com.github.alturkovic.domain.rule;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import com.github.alturkovic.domain.util.DomainUtils;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class StringUtils {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-    public static boolean isBlank(String text) {
-        return text == null || text.isBlank();
+class ReverseDomainMatcher {
+    private final String domain;
+    private final List<String> reversedLabels;
+
+    private int matchedLabelsCount = 0;
+
+    ReverseDomainMatcher(String domain) {
+        this.domain = domain;
+        this.reversedLabels = DomainUtils.reversedDomainLabels(domain);
     }
 
-    public static String toLowerCase(String text) {
-        if (text == null) {
-            return null;
+    String next() {
+        if (matchedLabelsCount > reversedLabels.size()) {
+            throw new IndexOutOfBoundsException(String.format("%d > %s", matchedLabelsCount, domain));
         }
-        return text.toLowerCase();
+
+        String nextLabel = reversedLabels.get(matchedLabelsCount);
+        matchedLabelsCount++;
+        return nextLabel;
+    }
+
+    int size() {
+        return reversedLabels.size();
+    }
+
+    String matchedDomain() {
+        List<String> matchedDomain = new ArrayList<>(reversedLabels.subList(0, matchedLabelsCount));
+        Collections.reverse(matchedDomain);
+        return DomainUtils.joinLabels(matchedDomain);
+    }
+
+    @Override
+    public String toString() {
+        return domain;
     }
 }

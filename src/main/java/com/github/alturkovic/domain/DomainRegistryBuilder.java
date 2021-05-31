@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain;
+package com.github.alturkovic.domain;
 
-import com.gihub.alturkovic.domain.registry.RuleRegistry;
-import com.gihub.alturkovic.domain.registry.RuleRegistryFactory;
-import com.gihub.alturkovic.domain.rule.Rule;
-import com.gihub.alturkovic.domain.rule.RuleParser;
+import com.github.alturkovic.domain.registry.RuleRegistry;
+import com.github.alturkovic.domain.registry.RuleRegistryFactory;
+import com.github.alturkovic.domain.rule.Rule;
+import com.github.alturkovic.domain.rule.RuleParser;
 
 import java.io.InputStream;
 import java.util.ArrayList;

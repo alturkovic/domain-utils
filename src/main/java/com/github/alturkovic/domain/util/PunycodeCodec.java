@@ -22,31 +22,43 @@
  * SOFTWARE.
  */
 
-package com.github.alturkovic.domain.rule;
+package com.github.alturkovic.domain.util;
 
-import org.junit.jupiter.api.Test;
+import java.net.IDN;
 
-import static org.assertj.core.api.Assertions.assertThat;
+/**
+ * Automatic Punycode Codec.
+ * <p>
+ * This codec remembers at {@link PunycodeCodec#decode(String)} whether the input was encoded or not.
+ * <p>
+ * The {@link PunycodeCodec#recode(String)} method will return the same format as the original input was.
+ *
+ * @implNote This codec is stateful and not thread-safe.
+ */
+public class PunycodeCodec {
+    private boolean decoded;
 
-class RuleComparatorShould {
-    private final RuleComparator comparator = RuleComparator.INSTANCE;
-
-    @Test
-    void compare() {
-        assertComparison("test.com", "com");
-        assertComparison("sub.test.com", "com");
-        assertComparison("sub.test.com", "test.com");
-        assertComparison("!com", "test.com");
-        assertComparison("!com", "sub.test.com");
+    /**
+     * Decodes a domain name into UTF-8.
+     *
+     * @param domain to decode
+     * @return UTF-8 domain name
+     */
+    public String decode(String domain) {
+        String asciiDomain = IDN.toUnicode(domain);
+        decoded = !asciiDomain.equals(domain);
+        return asciiDomain;
     }
 
-    private void assertComparison(String prevailingRule, String otherRule) {
-        Rule rule1 = new Rule(prevailingRule);
-        Rule rule2 = new Rule(otherRule);
-        assertThat(comparator.compare(rule1, rule2)).isEqualTo(1);
-        assertThat(comparator.compare(rule2, rule1)).isEqualTo(-1);
-        assertThat(comparator.compare(rule1, rule1)).isEqualTo(0);
-        assertThat(comparator.compare(rule2, rule2)).isEqualTo(0);
-
+    /**
+     * Returns the domain name in the original format.
+     * <p>
+     * The format is determined in {@link #decode(String)}.
+     *
+     * @param domain to recode
+     * @return domain in the original format
+     */
+    public String recode(String domain) {
+        return decoded ? IDN.toASCII(domain) : domain;
     }
 }

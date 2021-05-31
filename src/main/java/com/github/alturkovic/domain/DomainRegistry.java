@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain;
+package com.github.alturkovic.domain;
 
-import com.gihub.alturkovic.domain.registry.RuleRegistry;
-import com.gihub.alturkovic.domain.rule.Rule;
-import com.gihub.alturkovic.domain.util.DomainUtils;
-import com.gihub.alturkovic.domain.util.PunycodeCodec;
-import com.gihub.alturkovic.domain.util.StringUtils;
+import com.github.alturkovic.domain.registry.RuleRegistry;
+import com.github.alturkovic.domain.rule.Rule;
+import com.github.alturkovic.domain.util.DomainUtils;
+import com.github.alturkovic.domain.util.PunycodeCodec;
+import com.github.alturkovic.domain.util.StringUtils;
 import lombok.AllArgsConstructor;
 
 import java.util.List;

@@ -22,43 +22,41 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain.util;
+package com.github.alturkovic.domain.registry;
 
-import java.net.IDN;
+import com.github.alturkovic.domain.rule.Rule;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Automatic Punycode Codec.
- * <p>
- * This codec remembers at {@link PunycodeCodec#decode(String)} whether the input was encoded or not.
- * <p>
- * The {@link PunycodeCodec#recode(String)} method will return the same format as the original input was.
- *
- * @implNote This codec is stateful and not thread-safe.
+ * Used to build {@link RuleRegistry} from a list of rules.
  */
-public class PunycodeCodec {
-    private boolean decoded;
+public class RuleRegistryFactory {
 
     /**
-     * Decodes a domain name into UTF-8.
+     * Build the {@link RuleRegistry} from {@code rules}.
      *
-     * @param domain to decode
-     * @return UTF-8 domain name
+     * @param rules to register
+     * @return registry
      */
-    public String decode(String domain) {
-        String asciiDomain = IDN.toUnicode(domain);
-        decoded = !asciiDomain.equals(domain);
-        return asciiDomain;
+    public RuleRegistry build(List<Rule> rules) {
+        MutableNode root = new MutableNode(null);
+        for (Rule rule : rules) {
+            MutableNode node = root.getOrCreateDescendant(rule.getPattern());
+            node.setRule(rule);
+        }
+
+        return new RuleRegistry(convert(root));
     }
 
-    /**
-     * Returns the domain name in the original format.
-     * <p>
-     * The format is determined in {@link #decode(String)}.
-     *
-     * @param domain to recode
-     * @return domain in the original format
-     */
-    public String recode(String domain) {
-        return decoded ? IDN.toASCII(domain) : domain;
+    private ImmutableNode convert(MutableNode node) {
+        Map<String, ImmutableNode> convertedChildren = new HashMap<>();
+        for (MutableNode child : node.getChildren()) {
+            Node.addChild(convert(child), convertedChildren);
+        }
+
+        return new ImmutableNode(node.getLabel(), convertedChildren, node.getRule());
     }
 }

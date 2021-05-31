@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain.util;
+package com.github.alturkovic.domain.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

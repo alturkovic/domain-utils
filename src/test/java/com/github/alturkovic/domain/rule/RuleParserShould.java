@@ -24,8 +24,6 @@
 
 package com.github.alturkovic.domain.rule;
 
-import com.gihub.alturkovic.domain.rule.Rule;
-import com.gihub.alturkovic.domain.rule.RuleParser;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

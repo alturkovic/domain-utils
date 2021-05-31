@@ -22,41 +22,26 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain.registry;
+package com.github.alturkovic.domain.rule;
 
-import com.gihub.alturkovic.domain.rule.Rule;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+@EqualsAndHashCode
+@AllArgsConstructor
+class LabelMatcher {
+    private final String pattern;
 
-/**
- * Used to build {@link RuleRegistry} from a list of rules.
- */
-public class RuleRegistryFactory {
-
-    /**
-     * Build the {@link RuleRegistry} from {@code rules}.
-     *
-     * @param rules to register
-     * @return registry
-     */
-    public RuleRegistry build(List<Rule> rules) {
-        MutableNode root = new MutableNode(null);
-        for (Rule rule : rules) {
-            MutableNode node = root.getOrCreateDescendant(rule.getPattern());
-            node.setRule(rule);
+    boolean isMatch(String label) {
+        if (pattern.equals(Rule.WILDCARD)) {
+            return true;
         }
 
-        return new RuleRegistry(convert(root));
+        return pattern.equalsIgnoreCase(label);
     }
 
-    private ImmutableNode convert(MutableNode node) {
-        Map<String, ImmutableNode> convertedChildren = new HashMap<>();
-        for (MutableNode child : node.getChildren()) {
-            Node.addChild(convert(child), convertedChildren);
-        }
-
-        return new ImmutableNode(node.getLabel(), convertedChildren, node.getRule());
+    @Override
+    public String toString() {
+        return pattern;
     }
 }

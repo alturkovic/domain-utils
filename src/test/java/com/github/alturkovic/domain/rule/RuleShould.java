@@ -24,7 +24,6 @@
 
 package com.github.alturkovic.domain.rule;
 
-import com.gihub.alturkovic.domain.rule.Rule;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

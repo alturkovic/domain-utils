@@ -24,8 +24,6 @@
 
 package com.github.alturkovic.domain;
 
-import com.gihub.alturkovic.domain.DomainRegistry;
-import com.gihub.alturkovic.domain.DomainRegistryBuilder;
 import lombok.Builder;
 import org.junit.jupiter.api.Test;
 

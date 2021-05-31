@@ -24,7 +24,6 @@
 
 package com.github.alturkovic.domain.util;
 
-import com.gihub.alturkovic.domain.util.DomainUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

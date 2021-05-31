@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain.rule;
+package com.github.alturkovic.domain.rule;
 
-import com.gihub.alturkovic.domain.util.DomainUtils;
-import com.gihub.alturkovic.domain.util.StringUtils;
+import com.github.alturkovic.domain.util.DomainUtils;
+import com.github.alturkovic.domain.util.StringUtils;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;

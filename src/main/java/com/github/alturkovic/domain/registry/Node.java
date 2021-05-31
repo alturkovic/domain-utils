@@ -22,49 +22,59 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain.rule;
+package com.github.alturkovic.domain.registry;
 
-import com.gihub.alturkovic.domain.util.DomainUtils;
-import lombok.EqualsAndHashCode;
+import com.github.alturkovic.domain.rule.Rule;
+import com.github.alturkovic.domain.util.DomainUtils;
+import com.github.alturkovic.domain.util.StringUtils;
 
-import java.util.List;
+import java.util.*;
 
-@EqualsAndHashCode(of = "pattern")
-class RuleMatcher {
-    private final String pattern;
-    private final List<String> reversedLabels;
+abstract class Node<T extends Node<T>> {
+    private final String label;
+    private final Map<String, T> children;
 
-    RuleMatcher(String pattern) {
-        this.pattern = pattern;
-        this.reversedLabels = DomainUtils.reversedDomainLabels(pattern);
+    Node(String label) {
+        this(label, new HashMap<>());
     }
 
-    String match(String domain) {
-        ReverseDomainMatcher reverseDomainMatcher = new ReverseDomainMatcher(domain);
-        if (reverseDomainMatcher.size() < reversedLabels.size()) {
-            return null;
-        }
-
-        for (String label : reversedLabels) {
-            LabelMatcher matcher = new LabelMatcher(label);
-            String domainLabel = reverseDomainMatcher.next();
-            if (!matcher.isMatch(domainLabel)) {
-                return null;
-            }
-        }
-        return reverseDomainMatcher.matchedDomain();
+    Node(String label, Map<String, T> children) {
+        this.label = StringUtils.toLowerCase(label);
+        this.children = children;
     }
 
-    String getPattern() {
-        return pattern;
+    Collection<T> getChildren() {
+        return children.values();
     }
 
-    int size() {
-        return reversedLabels.size();
+    T getChild(String childLabel) {
+        return children.get(StringUtils.toLowerCase(childLabel));
+    }
+
+    void addChild(T node) {
+        addChild(node, children);
+    }
+
+    String getLabel() {
+        return label;
+    }
+
+    abstract Rule getRule();
+
+    T getWildcard() {
+        return children.get(Rule.WILDCARD);
+    }
+
+    Deque<String> convertDomain(String domain) {
+        return new LinkedList<>(DomainUtils.splitLabels(domain));
+    }
+
+    static <T extends Node<T>> void addChild(T child, Map<String, T> children) {
+        children.put(child.getLabel(), child);
     }
 
     @Override
     public String toString() {
-        return getPattern();
+        return label;
     }
 }

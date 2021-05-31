@@ -22,26 +22,44 @@
  * SOFTWARE.
  */
 
-package com.gihub.alturkovic.domain.rule;
+package com.github.alturkovic.domain.rule;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode
-@AllArgsConstructor
-class LabelMatcher {
-    private final String pattern;
+import java.util.Comparator;
 
-    boolean isMatch(String label) {
-        if (pattern.equals(Rule.WILDCARD)) {
-            return true;
-        }
-
-        return pattern.equalsIgnoreCase(label);
-    }
+/**
+ * Orders prevailing rules higher.
+ * <p>
+ * The rule with the highest {@link Rule#size()} is the prevailing rule.
+ * <p>
+ * An exception rule is always the prevailing rule.
+ *
+ * @see Rule#isExceptionRule()
+ * @see Rule#size()
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class RuleComparator implements Comparator<Rule> {
+    public static final RuleComparator INSTANCE = new RuleComparator();
 
     @Override
-    public String toString() {
-        return pattern;
+    public int compare(Rule rule1, Rule rule2) {
+        if (rule1.isExceptionRule() && rule2.isExceptionRule()) {
+            if (!rule1.equals(rule2)) {
+                throw new IllegalArgumentException("You can't compare two exception rules.");
+            }
+            return 0;
+        }
+
+        if (rule1.isExceptionRule()) {
+            return 1;
+        }
+
+        if (rule2.isExceptionRule()) {
+            return -1;
+        }
+
+        return Integer.compare(rule1.size(), rule2.size());
     }
 }
