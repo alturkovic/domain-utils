@@ -140,19 +140,25 @@ public class DomainRegistry {
     }
 
     private String extractRegistrableName(String domain, String publicSuffix) {
-        List<String> domainLabels = DomainUtils.splitLabels(domain);
-        List<String> suffixLabels = DomainUtils.splitLabels(publicSuffix);
-
-        if (domainLabels.size() == suffixLabels.size()) {
+        List<String> labels = extractNonSuffixLabels(domain, publicSuffix);
+        if (labels == null) {
             return null;
         }
 
-        int registrableNameIndex = domainLabels.size() - suffixLabels.size() - 1;
-
-        return domainLabels.get(registrableNameIndex);
+        return labels.get(labels.size() - 1);
     }
 
     private String extractSubDomain(String domain, String publicSuffix) {
+        List<String> labels = extractNonSuffixLabels(domain, publicSuffix);
+        if (labels == null) {
+            return null;
+        }
+
+        List<String> stripLastLabel = labels.subList(0, labels.size() - 1);
+        return DomainUtils.joinLabels(stripLastLabel);
+    }
+
+    private List<String> extractNonSuffixLabels(String domain, String publicSuffix) {
         List<String> domainLabels = DomainUtils.splitLabels(domain);
         List<String> suffixLabels = DomainUtils.splitLabels(publicSuffix);
 
@@ -160,11 +166,7 @@ public class DomainRegistry {
             return null;
         }
 
-        int registrableNameIndex = domainLabels.size() - suffixLabels.size() - 1;
-        if (registrableNameIndex == 0) {
-            return null;
-        }
-
-        return DomainUtils.joinLabels(domainLabels.subList(0, registrableNameIndex));
+        int registrableNameIndex = domainLabels.size() - suffixLabels.size();
+        return domainLabels.subList(0, registrableNameIndex);
     }
 }
