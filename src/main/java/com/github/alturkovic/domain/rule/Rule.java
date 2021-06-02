@@ -29,6 +29,7 @@ import com.github.alturkovic.domain.util.StringUtils;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The Public Suffix rule.
@@ -60,23 +61,23 @@ public class Rule {
      * Returns the matched public suffix of a domain.
      *
      * @param domain to match
-     * @return public suffix for {@code domain}, or {@code null}
+     * @return public suffix for {@code domain}
      */
-    public String match(String domain) {
+    public Optional<String> match(String domain) {
         if (StringUtils.isBlank(domain)) {
-            return null;
+            return Optional.empty();
         }
 
         String matchedDomain = matcher.match(domain);
         if (StringUtils.isBlank(matchedDomain)) {
-            return null;
+            return Optional.empty();
         }
 
         if (!isExceptionRule()) {
-            return matchedDomain;
+            return Optional.of(matchedDomain);
         }
 
-        return exceptionalMatch(matchedDomain);
+        return Optional.of(exceptionalMatch(matchedDomain));
     }
 
     /**
@@ -108,7 +109,11 @@ public class Rule {
     @Override
     public String toString() {
         String pattern = matcher.toString();
-        return isExceptionRule() ? EXCEPTION_TOKEN + pattern : pattern;
+        if (isExceptionRule()) {
+            return EXCEPTION_TOKEN + pattern;
+        }
+
+        return pattern;
     }
 
     private String exceptionalMatch(String match) {

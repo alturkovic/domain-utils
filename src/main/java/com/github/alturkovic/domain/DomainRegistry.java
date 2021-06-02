@@ -25,13 +25,12 @@
 package com.github.alturkovic.domain;
 
 import com.github.alturkovic.domain.registry.RuleRegistry;
-import com.github.alturkovic.domain.rule.Rule;
 import com.github.alturkovic.domain.util.DomainUtils;
 import com.github.alturkovic.domain.util.PunycodeCodec;
-import com.github.alturkovic.domain.util.StringUtils;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * API for the Public Suffix List rules.
@@ -58,22 +57,15 @@ public class DomainRegistry {
      * This method is case insensitive.
      *
      * @param domain to find public suffix for
-     * @return public suffix, or {@code null} if none matched
+     * @return public suffix
      */
-    public String getPublicSuffix(String domain) {
-        if (StringUtils.isBlank(domain)) {
-            return null;
-        }
-
+    public Optional<String> getPublicSuffix(String domain) {
         PunycodeCodec punycode = new PunycodeCodec();
         String decodedDomain = punycode.decode(domain);
 
-        Rule rule = ruleRegistry.findRule(decodedDomain);
-        if (rule == null) {
-            return null;
-        }
-
-        return punycode.recode(rule.match(decodedDomain));
+        return ruleRegistry.findRule(decodedDomain)
+            .flatMap(rule -> rule.match(decodedDomain))
+            .map(punycode::recode);
     }
 
     /**
@@ -82,19 +74,11 @@ public class DomainRegistry {
      * This method is case insensitive.
      *
      * @param domain to find registrable name for
-     * @return registrable domain name, or {@code null} if no rules matched
+     * @return registrable domain name
      */
-    public String getRegistrableName(String domain) {
-        if (StringUtils.isBlank(domain)) {
-            return null;
-        }
-
-        String publicSuffix = getPublicSuffix(domain);
-        if (publicSuffix == null) {
-            return null;
-        }
-
-        return extractRegistrableName(domain, publicSuffix);
+    public Optional<String> getRegistrableName(String domain) {
+        return getPublicSuffix(domain)
+            .flatMap(publicSuffix -> extractRegistrableName(domain, publicSuffix));
     }
 
     /**
@@ -103,19 +87,11 @@ public class DomainRegistry {
      * This method is case insensitive.
      *
      * @param domain to find subdomain for
-     * @return subdomain, or {@code null} if no rules matched
+     * @return subdomain
      */
-    public String getSubDomain(String domain) {
-        if (StringUtils.isBlank(domain)) {
-            return null;
-        }
-
-        String publicSuffix = getPublicSuffix(domain);
-        if (publicSuffix == null) {
-            return null;
-        }
-
-        return extractSubDomain(domain, publicSuffix);
+    public Optional<String> getSubDomain(String domain) {
+        return getPublicSuffix(domain)
+            .flatMap(publicSuffix -> extractSubDomain(domain, publicSuffix));
     }
 
     /**
@@ -124,38 +100,33 @@ public class DomainRegistry {
      * This method is case insensitive.
      *
      * @param domain to remove subdomain from
-     * @return stripped domain, or {@code null} if no rules matched
+     * @return stripped domain
      */
-    public String stripSubDomain(String domain) {
-        if (StringUtils.isBlank(domain)) {
-            return null;
-        }
-
-        String registrableName = getRegistrableName(domain);
-        if (StringUtils.isBlank(registrableName)) {
-            return null;
-        }
-
-        return domain.substring(domain.indexOf(registrableName));
+    public Optional<String> stripSubDomain(String domain) {
+        return getRegistrableName(domain)
+            .map(domain::indexOf)
+            .map(domain::substring);
     }
 
-    private String extractRegistrableName(String domain, String publicSuffix) {
+    private Optional<String> extractRegistrableName(String domain, String publicSuffix) {
         List<String> labels = extractNonSuffixLabels(domain, publicSuffix);
         if (labels == null) {
-            return null;
+            return Optional.empty();
         }
 
-        return labels.get(labels.size() - 1);
+        String registrableName = labels.get(labels.size() - 1);
+        return Optional.of(registrableName);
     }
 
-    private String extractSubDomain(String domain, String publicSuffix) {
+    private Optional<String> extractSubDomain(String domain, String publicSuffix) {
         List<String> labels = extractNonSuffixLabels(domain, publicSuffix);
         if (labels == null) {
-            return null;
+            return Optional.empty();
         }
 
         List<String> stripLastLabel = labels.subList(0, labels.size() - 1);
-        return DomainUtils.joinLabels(stripLastLabel);
+        String subDomain = DomainUtils.joinLabels(stripLastLabel);
+        return Optional.ofNullable(subDomain);
     }
 
     private List<String> extractNonSuffixLabels(String domain, String publicSuffix) {

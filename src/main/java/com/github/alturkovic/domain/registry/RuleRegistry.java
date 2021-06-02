@@ -26,12 +26,11 @@ package com.github.alturkovic.domain.registry;
 
 import com.github.alturkovic.domain.rule.Rule;
 import com.github.alturkovic.domain.rule.RuleComparator;
-import com.github.alturkovic.domain.util.StringUtils;
 import lombok.AllArgsConstructor;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -57,15 +56,10 @@ public class RuleRegistry {
      * Find the prevailing {@link Rule} for {@code domain}.
      *
      * @param domain to match
-     * @return the prevailing {@link Rule}, or {@code null} if no rules match
+     * @return the prevailing {@link Rule}
      */
-    public Rule findRule(String domain) {
-        List<Rule> rules = findRules(domain);
-        if (rules.isEmpty()) {
-            return null;
-        }
-
-        return Collections.max(rules, RuleComparator.INSTANCE);
+    public Optional<Rule> findRule(String domain) {
+        return findRules(domain).stream().max(RuleComparator.INSTANCE);
     }
 
     /**
@@ -77,7 +71,7 @@ public class RuleRegistry {
      * @return matching rules
      */
     public List<Rule> findRules(String domain) {
-        List<ImmutableNode> nodes = root.findNodes(StringUtils.toLowerCase(domain));
+        List<ImmutableNode> nodes = root.findNodes(domain.toLowerCase());
         return asRuleList(nodes);
     }
 

@@ -16,14 +16,14 @@ A "public suffix" is one under which Internet users can directly register names.
 
 ## Using the library
 
-Create a `DomainRegistry` using the `DomainRegistryFactory`. There are several ways how to do this explained in one of the following chapters.
+Create a `DomainRegistry` using the `DomainRegistryBuilder`. There are several ways how to do this explained in one of the following chapters.
 
-API methods:
+API methods all return `Optional` results:
 
-- `DomainRegistry.getPublicSuffix`: extract the public suffix or `null`
-- `DomainRegistry.getRegistrableName`: extract the registrable domain name (one level under the public suffix) or `null`
-- `DomainRegistry.getSubDomain`:  extract the subdomain or `null`
-- `DomainRegistry.stripSubDomain`: remove the subdomain if the domain is under a public suffix or `null`
+- `DomainRegistry.getPublicSuffix`: extract the public suffix
+- `DomainRegistry.getRegistrableName`: extract the registrable domain name (one level under the public suffix)
+- `DomainRegistry.getSubDomain`:  extract the subdomain
+- `DomainRegistry.stripSubDomain`: remove the subdomain if the domain is under a public suffix
 
 ### Examples
 
@@ -32,7 +32,7 @@ Assuming you are using the suggested rule list from Mozilla:
 1. alturkovic.blogspot.com
 - `DomainRegistry.getPublicSuffix`: blogspot.com
 - `DomainRegistry.getRegistrableName`: alturkovic
-- `DomainRegistry.getSubDomain`:  `null`
+- `DomainRegistry.getSubDomain`:  `Optional.empty`
 - `DomainRegistry.stripSubDomain`: alturkovic.blogspot.com
 
 2. en.wikipedia.org
@@ -42,14 +42,16 @@ Assuming you are using the suggested rule list from Mozilla:
 - `DomainRegistry.stripSubDomain`: wikipedia.org
 
 3. alturkovic.invalid
-- `DomainRegistry.getPublicSuffix`: `null`
-- `DomainRegistry.getRegistrableName`: `null`
-- `DomainRegistry.getSubDomain`:  `null`
-- `DomainRegistry.stripSubDomain`: `null`
+- `DomainRegistry.getPublicSuffix`: `Optional.empty`
+- `DomainRegistry.getRegistrableName`: `Optional.empty`
+- `DomainRegistry.getSubDomain`:  `Optional.empty`
+- `DomainRegistry.stripSubDomain`: `Optional.empty`
 
 ### What about www?
 
 The domain name must exclude `www.`. This library will treat it as a subdomain otherwise.
+
+Check out my URL handling project [here](https://github.com/alturkovic/url-utils) to help you with that.
 
 ## Importing into your project using Maven
 
@@ -106,10 +108,10 @@ You can integrate the download of the latest list in your maven build process:
     </plugin>
 ```
 
-Then instantiate the `DomainRegistryFactory`:
+Then instantiate the `DomainRegistryBuilder`:
 
 ```java
-DomainRegistry registry = new DomainRegistryFactory()
+DomainRegistry registry = new DomainRegistryBuilder()
     .fromFile("/effective_tld_names.dat")
     .build();
 ```
@@ -117,7 +119,7 @@ DomainRegistry registry = new DomainRegistryFactory()
 ### By downloading it manually
 
 ```java
-DomainRegistry registry = new DomainRegistryFactory()
+DomainRegistry registry = new DomainRegistryBuilder()
     .from(new URL("https://publicsuffix.org/list/effective_tld_names.dat").openStream())
     .build();
 ```
@@ -127,7 +129,7 @@ DomainRegistry registry = new DomainRegistryFactory()
 You can build the `DomainRegistry` using any rules you might need.
 
 ```java
-DomainRegistry registry = new DomainRegistryFactory()
+DomainRegistry registry = new DomainRegistryBuilder()
     .withRule("tld")
     .build();
 ```
@@ -139,15 +141,15 @@ You have one set of rules for all `org` domains except for `wikipedia.org`.
 You can create the following `DomainRegistry`:
 
 ```java
-DomainRegistry registry = new DomainRegistryFactory()
+DomainRegistry registry = new DomainRegistryBuilder()
     .withRule("org")
     .withRule("wikipedia.org")
     .build();
 
-System.out.println(registry.getPublicSuffix("any.org")); // org
-System.out.println(registry.getPublicSuffix("sub.any.org")); // org
-System.out.println(registry.getPublicSuffix("wikipedia.org")); // wikipedia.org
-System.out.println(registry.getPublicSuffix("en.wikipedia.org")); // wikipedia.org
+registry.getPublicSuffix("any.org"); // org
+registry.getPublicSuffix("sub.any.org"); // org
+registry.getPublicSuffix("wikipedia.org"); // wikipedia.org
+registry.getPublicSuffix("en.wikipedia.org"); // wikipedia.org
 ```
 
 The configured `DomainRegistry` can be used to see which ruleset should be applied depending on the domain name.

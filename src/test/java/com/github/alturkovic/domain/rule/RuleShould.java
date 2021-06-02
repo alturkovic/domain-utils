@@ -33,37 +33,37 @@ class RuleShould {
     @Test
     void matchExact() {
         Rule rule = new Rule("test.com");
-        assertThat(rule.match("test.com")).isEqualTo("test.com");
-        assertThat(rule.match("sub.test.com")).isEqualTo("test.com");
-        assertThat(rule.match("com")).isNull();
-        assertThat(rule.match("example.com")).isNull();
-        assertThat(rule.match("test.com.co")).isNull();
-        assertThat(rule.match("")).isNull();
-        assertThat(rule.match(null)).isNull();
+        assertThat(rule.match("test.com")).contains("test.com");
+        assertThat(rule.match("sub.test.com")).contains("test.com");
+        assertThat(rule.match("com")).isEmpty();
+        assertThat(rule.match("example.com")).isEmpty();
+        assertThat(rule.match("test.com.co")).isEmpty();
+        assertThat(rule.match("")).isEmpty();
+        assertThat(rule.match(null)).isEmpty();
     }
 
     @Test
     void matchWildcard() {
         Rule rule = new Rule("*.com");
-        assertThat(rule.match("test.com")).isEqualTo("test.com");
-        assertThat(rule.match("sub.test.com")).isEqualTo("test.com");
-        assertThat(rule.match("example.com")).isEqualTo("example.com");
-        assertThat(rule.match("com")).isNull();
-        assertThat(rule.match("test.org")).isNull();
-        assertThat(rule.match("test.com.co")).isNull();
-        assertThat(rule.match("")).isNull();
-        assertThat(rule.match(null)).isNull();
+        assertThat(rule.match("test.com")).contains("test.com");
+        assertThat(rule.match("sub.test.com")).contains("test.com");
+        assertThat(rule.match("example.com")).contains("example.com");
+        assertThat(rule.match("com")).isEmpty();
+        assertThat(rule.match("test.org")).isEmpty();
+        assertThat(rule.match("test.com.co")).isEmpty();
+        assertThat(rule.match("")).isEmpty();
+        assertThat(rule.match(null)).isEmpty();
     }
 
     @Test
     void matchExceptional() {
         Rule rule = new Rule("!test.com");
-        assertThat(rule.match("test.com")).isEqualTo("com");
-        assertThat(rule.match("sub.test.com")).isEqualTo("com");
-        assertThat(rule.match("com")).isNull();
-        assertThat(rule.match("example.com")).isNull();
-        assertThat(rule.match("test.com.co")).isNull();
-        assertThat(rule.match("")).isNull();
-        assertThat(rule.match(null)).isNull();
+        assertThat(rule.match("test.com")).contains("com");
+        assertThat(rule.match("sub.test.com")).contains("com");
+        assertThat(rule.match("com")).isEmpty();
+        assertThat(rule.match("example.com")).isEmpty();
+        assertThat(rule.match("test.com.co")).isEmpty();
+        assertThat(rule.match("")).isEmpty();
+        assertThat(rule.match(null)).isEmpty();
     }
 }

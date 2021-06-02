@@ -27,6 +27,7 @@ package com.github.alturkovic.domain;
 import lombok.Builder;
 import org.junit.jupiter.api.Test;
 
+import static java.util.Optional.ofNullable;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DomainRegistryShould {
@@ -171,17 +172,6 @@ class DomainRegistryShould {
     }
 
     @Test
-    void notExtractFromNull() {
-        validateDomainRegistryForDomain(DomainTestCase.builder()
-            .originalDomain(null)
-            .withoutSubDomain(null)
-            .subDomain(null)
-            .registrableName(null)
-            .publicSuffix(null)
-            .build());
-    }
-
-    @Test
     void notExtractFromBlank() {
         validateDomainRegistryForDomain(DomainTestCase.builder()
             .originalDomain(" ")
@@ -193,10 +183,10 @@ class DomainRegistryShould {
     }
 
     private void validateDomainRegistryForDomain(DomainTestCase testCase) {
-        assertThat(registry.getPublicSuffix(testCase.originalDomain)).isEqualTo(testCase.publicSuffix);
-        assertThat(registry.getRegistrableName(testCase.originalDomain)).isEqualTo(testCase.registrableName);
-        assertThat(registry.getSubDomain(testCase.originalDomain)).isEqualTo(testCase.subDomain);
-        assertThat(registry.stripSubDomain(testCase.originalDomain)).isEqualTo(testCase.withoutSubDomain);
+        assertThat(registry.getPublicSuffix(testCase.originalDomain)).isEqualTo(ofNullable(testCase.publicSuffix));
+        assertThat(registry.getRegistrableName(testCase.originalDomain)).isEqualTo(ofNullable(testCase.registrableName));
+        assertThat(registry.getSubDomain(testCase.originalDomain)).isEqualTo(ofNullable(testCase.subDomain));
+        assertThat(registry.stripSubDomain(testCase.originalDomain)).isEqualTo(ofNullable(testCase.withoutSubDomain));
     }
 
     @Builder

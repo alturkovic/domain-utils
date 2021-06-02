@@ -29,15 +29,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StringUtils {
-
     public static boolean isBlank(String text) {
         return text == null || text.isBlank();
-    }
-
-    public static String toLowerCase(String text) {
-        if (text == null) {
-            return null;
-        }
-        return text.toLowerCase();
     }
 }

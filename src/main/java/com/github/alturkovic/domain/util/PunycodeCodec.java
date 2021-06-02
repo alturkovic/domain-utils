@@ -59,6 +59,10 @@ public class PunycodeCodec {
      * @return domain in the original format
      */
     public String recode(String domain) {
-        return decoded ? IDN.toASCII(domain) : domain;
+        if (decoded) {
+            return IDN.toASCII(domain);
+        }
+
+        return domain;
     }
 }

@@ -26,7 +26,6 @@ package com.github.alturkovic.domain.registry;
 
 import com.github.alturkovic.domain.rule.Rule;
 import com.github.alturkovic.domain.util.DomainUtils;
-import com.github.alturkovic.domain.util.StringUtils;
 
 import java.util.*;
 
@@ -39,7 +38,7 @@ abstract class Node<T extends Node<T>> {
     }
 
     Node(String label, Map<String, T> children) {
-        this.label = StringUtils.toLowerCase(label);
+        this.label = (label == null) ? null : label.toLowerCase();
         this.children = children;
     }
 
@@ -48,7 +47,7 @@ abstract class Node<T extends Node<T>> {
     }
 
     T getChild(String childLabel) {
-        return children.get(StringUtils.toLowerCase(childLabel));
+        return children.get(childLabel.toLowerCase());
     }
 
     void addChild(T node) {
