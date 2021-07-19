@@ -27,10 +27,7 @@ package com.github.alturkovic.domain.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DomainUtils {
@@ -48,7 +45,7 @@ public final class DomainUtils {
             return Collections.emptyList();
         }
 
-        return List.of(pattern.split("\\."));
+        return Arrays.asList(pattern.split("\\."));
     }
 
     /**
@@ -83,6 +80,6 @@ public final class DomainUtils {
     }
 
     private static boolean areAllElementsBlank(Collection<String> labels) {
-        return labels.stream().allMatch(String::isBlank);
+        return labels.stream().allMatch(StringUtils::isBlank);
     }
 }

@@ -29,7 +29,10 @@ import com.github.alturkovic.domain.registry.RuleRegistryFactory;
 import com.github.alturkovic.domain.rule.Rule;
 import com.github.alturkovic.domain.rule.RuleParser;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +41,22 @@ import java.util.List;
  * Used to build {@link DomainRegistry} instances.
  */
 public class DomainRegistryBuilder {
+    private final static String DEFAULT_RULES = "https://publicsuffix.org/list/effective_tld_names.dat";
+
     private final List<Rule> rules = new ArrayList<>();
+
+    /**
+     * Add default rules as defined <a href="https://publicsuffix.org/list/effective_tld_names.dat">here</a>.
+     *
+     * @return this builder
+     */
+    public DomainRegistryBuilder withDefaultRules() {
+        try (InputStream rules = new URL(DEFAULT_RULES).openStream()) {
+            return from(rules);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
 
     /**
      * Add rules from {@code fileName} to this builder.

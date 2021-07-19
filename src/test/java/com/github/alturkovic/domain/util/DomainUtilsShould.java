@@ -26,8 +26,8 @@ package com.github.alturkovic.domain.util;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,11 +37,11 @@ class DomainUtilsShould {
     void joinLabels() {
         assertThat(DomainUtils.joinLabels(null)).isNull();
         assertThat(DomainUtils.joinLabels(Collections.emptyList())).isNull();
-        assertThat(DomainUtils.joinLabels(List.of("", " "))).isNull();
-        assertThat(DomainUtils.joinLabels(List.of("com"))).isEqualTo("com");
-        assertThat(DomainUtils.joinLabels(List.of("test", "com"))).isEqualTo("test.com");
-        assertThat(DomainUtils.joinLabels(List.of("sub", "test", "com"))).isEqualTo("sub.test.com");
-        assertThat(DomainUtils.joinLabels(List.of("个人", "hk"))).isEqualTo("个人.hk");
+        assertThat(DomainUtils.joinLabels(Arrays.asList("", " "))).isNull();
+        assertThat(DomainUtils.joinLabels(Arrays.asList("com"))).isEqualTo("com");
+        assertThat(DomainUtils.joinLabels(Arrays.asList("test", "com"))).isEqualTo("test.com");
+        assertThat(DomainUtils.joinLabels(Arrays.asList("sub", "test", "com"))).isEqualTo("sub.test.com");
+        assertThat(DomainUtils.joinLabels(Arrays.asList("个人", "hk"))).isEqualTo("个人.hk");
     }
 
     @Test

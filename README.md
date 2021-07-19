@@ -73,7 +73,7 @@ Add the following under your `<dependencies>`:
   <dependency>
     <groupId>com.github.alturkovic</groupId>
     <artifactId>domain-utils</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
   </dependency>
 </dependencies>
 ```
@@ -121,6 +121,16 @@ DomainRegistry registry = new DomainRegistryBuilder()
 ```java
 DomainRegistry registry = new DomainRegistryBuilder()
     .from(new URL("https://publicsuffix.org/list/effective_tld_names.dat").openStream())
+    .build();
+```
+
+## By using the API call
+
+This is the same as downloading it manually over HTTP.
+
+```java
+DomainRegistry registry = new DomainRegistryBuilder()
+    .withDefaultRules()
     .build();
 ```
 

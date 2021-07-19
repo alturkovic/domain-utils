@@ -32,6 +32,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The parser for the Public Suffix List rules.
@@ -50,7 +51,7 @@ public class RuleParser {
         return reader.lines()
             .map(String::trim)
             .map(this::parseLine)
-            .flatMap(Optional::stream)
+            .flatMap(rule -> rule.<Stream<? extends Rule>>map(Stream::of).orElseGet(Stream::empty))
             .collect(Collectors.toList());
     }
 
