@@ -1,4 +1,4 @@
-![Release](https://jitpack.io/v/alturkovic/domain-utils.svg)
+![Release](https://jitpack.io/v/alturkovic/domain-utils.svg) (Requires Java 8+)
 
 Inspired by: https://github.com/whois-server-list/public-suffix-list
 
