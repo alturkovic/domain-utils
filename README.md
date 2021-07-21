@@ -1,4 +1,4 @@
-![Java](https://img.shields.io/badge/Java-8%2B-ED8B00?style=for-the-badge&labelColor=ED8B00&logo=java&color=808080) ![JitPack](https://img.shields.io/jitpack/v/github/alturkovic/domain-utils?style=for-the-badge&logo=GitHub&labelColor=007ec5&color=808080)
+![Java](https://img.shields.io/badge/Java-8%2B-ED8B00?style=for-the-badge&labelColor=ED8B00&logo=java&color=808080) ![JitPack](https://img.shields.io/jitpack/v/github/alturkovic/domain-utils?style=for-the-badge&logo=Git&labelColor=007ec5&color=808080&logoColor=white)
 
 Inspired by: https://github.com/whois-server-list/public-suffix-list
 
